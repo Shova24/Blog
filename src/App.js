@@ -1,4 +1,3 @@
-import MediaQuery from "react-responsive";
 import { Col, Row, Tabs } from "antd";
 import { useEffect, useState } from "react";
 import Post from "./Components/Post";
@@ -21,24 +20,6 @@ function App() {
     <>
       <Tabs defaultActiveKey="1" centered>
         <Tabs.TabPane tab="Posts" key="1">
-          <div style={{ backgroundColor: "gray" }}>
-            <Row>
-              <Col span={24} md={12} lg={8}>
-                <Post />
-              </Col>
-              <Col span={24} md={12} lg={8}>
-                <MediaQuery minWidth={768}>
-                  <Post />
-                </MediaQuery>
-              </Col>
-              <Col span={24} md={12} lg={8}>
-                <MediaQuery minWidth={991}>
-                  <Post />
-                </MediaQuery>
-              </Col>
-            </Row>
-          </div>
-
           <Row>
             {post.map((el) => (
               <Col key={el.id} span={24} md={12} lg={8}>

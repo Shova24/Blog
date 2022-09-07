@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 const blogContext = createContext();
 
-export const blogProvider = ({ children }) => {
+export const BlogProvider = ({ children }) => {
   return <blogContext.Provider value={{}}>{children}</blogContext.Provider>;
 };
 
