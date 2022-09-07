@@ -1,32 +1,23 @@
-import { Col, Row, Tabs } from "antd";
-import { useEffect, useState } from "react";
+import { Col, Row, Tabs, Menu } from "antd";
+import { Link, Route, Routes } from "react-router-dom";
 import Posts from "./Components/Post/Posts";
-import User from "./Components/User";
+import Users from "./Components/User/Users";
+import AppRoutes from "./Utilities/Routes";
 
 function App() {
-  const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((data) => setUser(data));
-  }, []);
   return (
     <>
-      <Tabs defaultActiveKey="1" centered>
-        <Tabs.TabPane tab="Posts" key="1">
-          <Posts />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Users" key="2">
-          <Row>
-            {user.map((el) => (
-              <Col key={el.id} span={24}>
-                <User user={el} />
-              </Col>
-            ))}
-          </Row>
-        </Tabs.TabPane>
-      </Tabs>
+      <Menu mode="horizontal" style={{ display: "flex", justifyContent: "center" }}>
+        <Menu.Item>
+          <Link to={"/"}>Posts</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to={"/users"}>Users</Link>
+        </Menu.Item>
+      </Menu>
+      <Routes>
+        <Route path="*" element={<AppRoutes />} />
+      </Routes>
     </>
   );
 }
