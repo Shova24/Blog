@@ -1,5 +1,6 @@
 import { Card, Row, Col, Button } from "antd";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Post({ post }) {
   return (
@@ -11,7 +12,9 @@ export default function Post({ post }) {
       </Row>
       <Row justify="end">
         <Col span={24}>
-          <Button> Click</Button>
+          <Button>
+            <Link to={`posts/${post.id}`}>Click</Link>
+          </Button>
         </Col>
       </Row>
     </Card>
