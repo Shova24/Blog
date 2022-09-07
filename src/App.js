@@ -1,24 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { Tabs } from "antd";
+import Post from "./Components/Post";
+import User from "./Components/User";
 
 function App() {
+  const arr = ["Posts", "Users"];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Tabs defaultActiveKey="1" centered>
+        <Tabs.TabPane tab="Posts" key="1">
+          <Post />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Users" key="2">
+          <User />
+        </Tabs.TabPane>
+      </Tabs>
+    </>
   );
 }
 
