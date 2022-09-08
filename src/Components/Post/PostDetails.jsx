@@ -2,6 +2,7 @@ import { Card, Col, Divider, Row, Tag, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Comments from "./Comments";
 const { Title } = Typography;
 
 export default function PostDetails() {
@@ -15,7 +16,7 @@ export default function PostDetails() {
   }, []);
 
   return (
-    <Card style={{ borderRadius: "15px", margin: "10px", padding: "10px" }}>
+    <Card style={{ borderRadius: "15px" }}>
       <Row justify="start">
         <Col style={{ marginRight: "15px" }}>
           <ArrowLeftOutlined
@@ -39,6 +40,9 @@ export default function PostDetails() {
         <Col>{post.body}</Col>
         <Divider orientation="right">{post.userId}</Divider>
       </Row>
+      <Card style={{ margin: "0px 15px 0px 15px", borderRadius: "15px" }}>
+        <Comments />
+      </Card>
     </Card>
   );
 }
