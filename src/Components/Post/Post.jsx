@@ -13,7 +13,7 @@ export default function Post({ post }) {
       <Row justify="end">
         <Col span={24}>
           <Button>
-            <Link to={`/${post.id}`}>Click</Link>
+            <Link to={`/posts/${post.id}`}>Click</Link>
           </Button>
         </Col>
       </Row>

@@ -8,9 +8,11 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Posts />} />
-      <Route path="/:postId" element={<PostDetails />} />
+      <Route exact path="/posts" element={<Posts />} />
+      <Route exact path="/posts/:postId" element={<PostDetails />} />
       <Route path="/users" element={<Users />} />
       <Route path="/users/:UserID" element={<UserDetails />} />
+      <Route path="*" element={<>Page Not Found</>} />
     </Routes>
   );
 }
