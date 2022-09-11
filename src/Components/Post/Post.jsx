@@ -3,9 +3,26 @@ import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Post({ post }) {
+export default function Post({ post, posts, setPost }) {
   const { Title } = Typography;
-  const deletePost = (postId) => {
+  const deletePost = async (postId) => {
+    await fetch(`https://jsonplaceholder.typicode.com/posts/1${postId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.status !== 200) {
+          return;
+        } else {
+          setPost(
+            posts.filter((el) => {
+              return el.id !== postId;
+            })
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     console.log("Deleted Item ID : ", postId);
   };
   const editPost = (item) => {

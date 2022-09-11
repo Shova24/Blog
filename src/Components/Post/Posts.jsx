@@ -14,7 +14,7 @@ export default function Posts() {
     <Row>
       {post.map((el) => (
         <Col key={el.id} span={24} md={12} lg={8}>
-          <Post post={el} />
+          <Post post={el} posts={post} setPost={setPost} />
         </Col>
       ))}
     </Row>
