@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Col, Row } from "antd";
 import Post from "./Post";
+import ModalComp from "../Shared/ModalComp";
 
 export default function Posts() {
   const [post, setPost] = useState([]);

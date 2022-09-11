@@ -1,9 +1,13 @@
-import { Card, Row, Col, Button, Tag, Typography, Divider } from "antd";
+import { Card, Row, Col, Button, Tag, Typography, Divider, Modal, Form, Input } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ModalComp from "../Shared/ModalComp";
 
 export default function Post({ post, posts, setPost }) {
+  const { TextArea } = Input;
+  const [form] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { Title } = Typography;
   const deletePost = async (postId) => {
     await fetch(`https://jsonplaceholder.typicode.com/posts/1${postId}`, {
@@ -25,11 +29,47 @@ export default function Post({ post, posts, setPost }) {
       });
     console.log("Deleted Item ID : ", postId);
   };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const editPost = (item) => {
+    form.setFieldsValue({
+      title: item.title,
+      body: item.body,
+      userID: item.userId,
+    });
+    setIsModalOpen(true);
+
     console.log(item);
+  };
+  const updatePost = () => {
+    console.log("Update Item");
+    setIsModalOpen(false);
   };
   return (
     <Card style={{ borderRadius: "15px", margin: "10px" }}>
+      <Modal form={form} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} closable={false}>
+        <Card style={{ borderRadius: "15px", margin: "10px" }}>
+          <Form form={form} onFinish={updatePost}>
+            <Form.Item name="userID" label="User ID">
+              <Input />
+            </Form.Item>
+            <Form.Item name="title" label="Post Title">
+              <Input />
+            </Form.Item>
+            <Form.Item name="body" label="Post Body">
+              <TextArea />
+            </Form.Item>
+            <Row justify="end">
+              <Button htmlType="submit">Submit</Button>
+            </Row>
+          </Form>
+        </Card>
+      </Modal>
       <Row justify="space-between">
         <Col>
           <Tag color="geekblue" style={{ padding: "2px 24px 2px 24px" }}>
