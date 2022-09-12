@@ -9,7 +9,10 @@ export default function Users() {
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((data) => setUser(data));
+      .then((data) => {
+        console.log(data);
+        setUser(data);
+      });
   }, []);
   const columns = [
     {
@@ -35,13 +38,13 @@ export default function Users() {
       key: "operation",
       fixed: "right",
       width: 100,
-      render: () => (
+      render: (_, record) => (
         <Button shape="round">
-          <Link to={`/users/${user[0].id}`}>Details</Link>
+          <Link to={`/users/${record.id}`}>Details</Link>
         </Button>
       ),
     },
   ];
-  console.log(user);
+
   return <Table style={{ borderRadius: "20px", margin: "50px" }} columns={columns} dataSource={user} />;
 }

@@ -1,14 +1,14 @@
-import { Card, Row, Col, Button, Tag, Typography, Divider, Modal, Form, Input } from "antd";
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { Form, Card, Row, Col, Button, Tag, Typography, Divider, Modal, Input } from "antd";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import ModalComp from "../Shared/ModalComp";
 
+const { TextArea } = Input;
+const { Title } = Typography;
 export default function Post({ post, posts, setPost }) {
-  const { TextArea } = Input;
-  const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { Title } = Typography;
+
+  const [form] = Form.useForm();
   const deletePost = async (postId) => {
     await fetch(`https://jsonplaceholder.typicode.com/posts/1${postId}`, {
       method: "DELETE",
@@ -29,13 +29,7 @@ export default function Post({ post, posts, setPost }) {
       });
     console.log("Deleted Item ID : ", postId);
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
   const editPost = (item) => {
     form.setFieldsValue({
       title: item.title,
@@ -44,15 +38,32 @@ export default function Post({ post, posts, setPost }) {
     });
     setIsModalOpen(true);
 
-    console.log(item);
+    // console.log(item);
   };
-  const updatePost = () => {
-    console.log("Update Item");
+  const updatePost = (values) => {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${post.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        id: post.id,
+        title: values.title,
+        body: values.body,
+        userId: values.userID,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        const edit = posts.filter((el) => el.id !== post.id);
+        setPost([json, ...edit]);
+      });
+
     setIsModalOpen(false);
   };
   return (
     <Card style={{ borderRadius: "15px", margin: "10px" }}>
-      <Modal form={form} open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null} closable={false}>
+      <Modal open={isModalOpen} onOk={updatePost} footer={null}>
         <Card style={{ borderRadius: "15px", margin: "10px" }}>
           <Form form={form} onFinish={updatePost}>
             <Form.Item name="userID" label="User ID">

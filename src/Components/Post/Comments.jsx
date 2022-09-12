@@ -3,7 +3,7 @@ import { Avatar, Comment, Tooltip } from "antd";
 import moment from "moment";
 import React, { createElement, useState } from "react";
 
-export default function Comments() {
+export default function Comments({ comment }) {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
@@ -38,8 +38,8 @@ export default function Comments() {
   return (
     <Comment
       actions={actions}
-      author={<a>Han Solo</a>}
-      content={<p>We supply a series of design principles, practical patterns and high quality design</p>}
+      author={<h2>{comment.name}</h2>}
+      content={<p>{comment.body}</p>}
       datetime={
         <Tooltip title={moment().format("YYYY-MM-DD HH:mm:ss")}>
           <span>{moment().fromNow()}</span>
