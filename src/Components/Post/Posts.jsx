@@ -5,11 +5,12 @@ import { useContext } from "react";
 import BlogContext from "../../Utilities/Context";
 export default function Posts() {
   // const [post, setPost] = useState([]);
-  const { post, setPost } = useContext(BlogContext);
+  const { post, setPost, getPosts } = useContext(BlogContext);
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
-      .then((res) => res.json())
-      .then((data) => setPost(data));
+    getPosts();
+    // fetch("https://jsonplaceholder.typicode.com/posts")
+    //   .then((res) => res.json())
+    //   .then((data) => setPost(data));
   }, []);
 
   return (

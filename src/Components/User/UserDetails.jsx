@@ -9,12 +9,13 @@ const { Title, Text } = Typography;
 const { TextArea } = Input;
 
 export default function UserDetails() {
-  const { post, setPost } = useContext(BlogContext);
+  const { post, setPost, getPosts } = useContext(BlogContext);
   const [form] = Form.useForm();
   const { UserID } = useParams();
   const [user, setUser] = useState({});
   // console.log(post);
   useEffect(() => {
+    getPosts();
     fetch(`https://jsonplaceholder.typicode.com/users/${UserID}`)
       .then((response) => response.json())
       .then((data) => {
@@ -54,15 +55,15 @@ export default function UserDetails() {
           <span>Back</span>
         </Link>
       </Row>
-      <Row
+      {/* <Row
         justify="space-between"
         style={{ margin: "20px", padding: "20px", height: "250px", backgroundColor: "lightGray", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "10px" }}>
-        {/* Add Post  */}
-        <Col span={15}>
+     
+        <Col md={15} xs={24}>
           <Card style={{ borderRadius: "15px" }}>
             <Form form={form} onFinish={addPost}>
               <Row>
-                <Col xs={24}>
+                <Col>
                   <Form.Item name="title" label="Title : ">
                     <Input></Input>
                   </Form.Item>
@@ -79,8 +80,48 @@ export default function UserDetails() {
             </Form>
           </Card>
         </Col>
-        {/* Profile Card   */}
-        <Col span={8} style={{ borderRadius: "15px" }}>
+   
+        <Col md={8} sx={24} style={{ borderRadius: "15px" }}>
+          <Card style={{ borderRadius: "15px", padding: "5px" }}>
+            <Row justify="end">
+              <Link to="/users">
+                <EditOutlined />
+              </Link>
+            </Row>
+            <Title level={3}>{user?.name}</Title>
+            <Divider>{user?.company?.name}</Divider>
+            <Col span={24}>
+              <Text>{user?.email}</Text>
+            </Col>
+            <Col span={24}>
+              <Text>{user?.phone}</Text>
+            </Col>
+          </Card>
+        </Col>
+      </Row> */}
+      <Row gutter={[16, 16]} style={{ backgroundColor: "lightblue", padding: "10px" }}>
+        <Col md={12} xs={24}>
+          <Card style={{ borderRadius: "15px" }}>
+            <Form form={form} onFinish={addPost}>
+              <Row>
+                <Col>
+                  <Form.Item name="title" label="Title : ">
+                    <Input></Input>
+                  </Form.Item>
+                  <Form.Item name="body">
+                    <TextArea placeholder="write your post" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row justify="end">
+                <Button shape="round" htmlType="submit">
+                  Add Post
+                </Button>
+              </Row>
+            </Form>
+          </Card>
+        </Col>
+        <Col md={12} xs={24}>
           <Card style={{ borderRadius: "15px", padding: "5px" }}>
             <Row justify="end">
               <Link to="/users">

@@ -5,7 +5,12 @@ const blogContext = createContext();
 
 export const BlogProvider = ({ children }) => {
   const [post, setPost] = useState([]);
-  return <blogContext.Provider value={{ post, setPost }}>{children}</blogContext.Provider>;
+  const getPosts = () => {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+      .then((res) => res.json())
+      .then((data) => setPost(data));
+  };
+  return <blogContext.Provider value={{ post, setPost, getPosts }}>{children}</blogContext.Provider>;
 };
 
 export default blogContext;
