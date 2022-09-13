@@ -1,7 +1,6 @@
-import { Button, Card, Col, Row, Table } from "antd";
+import { Button, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import User from "./User";
 
 export default function Users() {
   const [user, setUser] = useState([]);
@@ -10,10 +9,16 @@ export default function Users() {
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setUser(data);
+        // console.log(data);
+        setUser(
+          data.map((el) => ({
+            ...el,
+            key: el.id,
+          }))
+        );
       });
   }, []);
+
   const columns = [
     {
       key: "name",

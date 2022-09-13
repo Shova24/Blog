@@ -1,38 +1,80 @@
 import { Card, Form, Input, Button, Row, Col, Typography, Divider } from "antd";
-import React, { useEffect } from "react";
+import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import BlogContext from "../../Utilities/Context";
+import Post from "../Post/Post";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
+
 export default function UserDetails() {
+  const { post, setPost } = useContext(BlogContext);
   const [form] = Form.useForm();
   const { UserID } = useParams();
   const [user, setUser] = useState({});
-
+  // console.log(post);
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users/1`)
+    fetch(`https://jsonplaceholder.typicode.com/users/${UserID}`)
       .then((response) => response.json())
-      .then((data) => setUser(data));
+      .then((data) => {
+        data = { key: data.id, ...data };
+        setUser(data);
+      });
   }, []);
-  // console.log(user);
+
+  const addPost = async (values) => {
+    console.log("post", values);
+    await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: JSON.stringify({
+        id: post.length + 1,
+        title: values.title,
+        body: values.body,
+        userId: UserID,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        setPost([json, ...post]);
+      });
+  };
 
   return (
     <>
-      <Row justify="space-between" style={{ margin: "20px" }}>
+      <Row style={{ marginLeft: "20px" }}>
+        <Link to="/users">
+          <span>
+            <LeftOutlined />
+          </span>
+          <span>Back</span>
+        </Link>
+      </Row>
+      <Row
+        justify="space-between"
+        style={{ margin: "20px", padding: "20px", height: "250px", backgroundColor: "lightGray", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "10px" }}>
         {/* Add Post  */}
         <Col span={15}>
           <Card style={{ borderRadius: "15px" }}>
-            <Form form={form}>
+            <Form form={form} onFinish={addPost}>
               <Row>
                 <Col xs={24}>
-                  <Form.Item>
-                    {/* <Input /> */}
-                    <TextArea />
+                  <Form.Item name="title" label="Title : ">
+                    <Input></Input>
+                  </Form.Item>
+                  <Form.Item name="body">
+                    <TextArea placeholder="write your post" />
                   </Form.Item>
                 </Col>
               </Row>
               <Row justify="end">
-                <Button>Add Post</Button>
+                <Button shape="round" htmlType="submit">
+                  Add Post
+                </Button>
               </Row>
             </Form>
           </Card>
@@ -40,6 +82,11 @@ export default function UserDetails() {
         {/* Profile Card   */}
         <Col span={8} style={{ borderRadius: "15px" }}>
           <Card style={{ borderRadius: "15px", padding: "5px" }}>
+            <Row justify="end">
+              <Link to="/users">
+                <EditOutlined />
+              </Link>
+            </Row>
             <Title level={3}>{user?.name}</Title>
             <Divider>{user?.company?.name}</Divider>
             <Col span={24}>
@@ -52,6 +99,13 @@ export default function UserDetails() {
         </Col>
       </Row>
       {/* posts of this user */}
+      <Row>
+        {post.map((el) => (
+          <Col key={el.id} span={24} md={12} lg={8}>
+            <Post post={el} posts={post} setPost={setPost} />
+          </Col>
+        ))}
+      </Row>
     </>
   );
 }
