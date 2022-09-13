@@ -16,26 +16,30 @@ export default function Users() {
   }, []);
   const columns = [
     {
+      key: "name",
       title: "Name",
       dataIndex: "name",
       width: 150,
     },
     {
+      key: "username",
       title: "User Name",
       dataIndex: "username",
       width: 150,
     },
     {
+      key: "email",
       title: "Email",
       dataIndex: "email",
     },
     {
+      key: "phone",
       title: "Phone",
       dataIndex: "phone",
     },
     {
-      title: "Action",
       key: "operation",
+      title: "Action",
       fixed: "right",
       width: 100,
       render: (_, record) => (
