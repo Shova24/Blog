@@ -3,6 +3,8 @@ import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+
 import BlogContext from "../../Utilities/Context";
 import Post from "../Post/Post";
 const { Title, Text } = Typography;
@@ -25,11 +27,12 @@ export default function UserDetails() {
   }, []);
 
   const addPost = async (values) => {
-    console.log("post", values);
-    await fetch("https://jsonplaceholder.typicode.com/posts", {
+    let len = 1;
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       body: JSON.stringify({
-        id: post.length + 1,
+        // id: Math.floor(Math.random()) + 100,
+        id: uuidv4(),
         title: values.title,
         body: values.body,
         userId: UserID,
@@ -37,12 +40,16 @@ export default function UserDetails() {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-        setPost([json, ...post]);
-      });
+    });
+    const data = await response.json();
+    setPost([data, ...post]);
+    len = Number(data.length);
+    console.log(len);
+    // .then((response) => response.json())
+    // .then((json) => {
+    //   // console.log(json);
+    //   setPost([json, ...post]);
+    // });
   };
 
   return (
@@ -55,56 +62,13 @@ export default function UserDetails() {
           <span>Back</span>
         </Link>
       </Row>
-      {/* <Row
-        justify="space-between"
-        style={{ margin: "20px", padding: "20px", height: "250px", backgroundColor: "lightGray", display: "flex", justifyContent: "space-between", alignItems: "center", borderRadius: "10px" }}>
-     
-        <Col md={15} xs={24}>
-          <Card style={{ borderRadius: "15px" }}>
-            <Form form={form} onFinish={addPost}>
-              <Row>
-                <Col>
-                  <Form.Item name="title" label="Title : ">
-                    <Input></Input>
-                  </Form.Item>
-                  <Form.Item name="body">
-                    <TextArea placeholder="write your post" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row justify="end">
-                <Button shape="round" htmlType="submit">
-                  Add Post
-                </Button>
-              </Row>
-            </Form>
-          </Card>
-        </Col>
-   
-        <Col md={8} sx={24} style={{ borderRadius: "15px" }}>
-          <Card style={{ borderRadius: "15px", padding: "5px" }}>
-            <Row justify="end">
-              <Link to="/users">
-                <EditOutlined />
-              </Link>
-            </Row>
-            <Title level={3}>{user?.name}</Title>
-            <Divider>{user?.company?.name}</Divider>
-            <Col span={24}>
-              <Text>{user?.email}</Text>
-            </Col>
-            <Col span={24}>
-              <Text>{user?.phone}</Text>
-            </Col>
-          </Card>
-        </Col>
-      </Row> */}
+
       <Row gutter={[16, 16]} style={{ backgroundColor: "lightblue", padding: "10px" }}>
         <Col md={12} xs={24}>
           <Card style={{ borderRadius: "15px" }}>
             <Form form={form} onFinish={addPost}>
               <Row>
-                <Col>
+                <Col xs={24}>
                   <Form.Item name="title" label="Title : ">
                     <Input></Input>
                   </Form.Item>
