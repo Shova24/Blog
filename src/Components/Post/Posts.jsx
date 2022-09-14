@@ -5,7 +5,7 @@ import { useContext } from "react";
 import BlogContext from "../../Utilities/Context";
 export default function Posts() {
   // const [post, setPost] = useState([]);
-  const { post, setPost, getPosts, showLoader, setShowLoader } = useContext(BlogContext);
+  const { post, setPost, getPosts, showLoader } = useContext(BlogContext);
   useEffect(() => {
     getPosts();
     // fetch("https://jsonplaceholder.typicode.com/posts")

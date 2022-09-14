@@ -1,22 +1,25 @@
-import { Button, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Table, Spin, Row } from "antd";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import blogContext from "../../Utilities/Context";
 
 export default function Users() {
-  const [user, setUser] = useState([]);
+  const { showLoader, user, getUsers } = useContext(blogContext);
+  // const [user, setUser] = useState([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        setUser(
-          data.map((el) => ({
-            ...el,
-            key: el.id,
-          }))
-        );
-      });
+    getUsers();
+    // fetch("https://jsonplaceholder.typicode.com/users")
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     // console.log(data);
+    //     setUser(
+    //       data.map((el) => ({
+    //         ...el,
+    //         key: el.id,
+    //       }))
+    //     );
+    //   });
   }, []);
 
   const columns = [
@@ -55,5 +58,14 @@ export default function Users() {
     },
   ];
 
-  return <Table style={{ borderRadius: "20px", margin: "50px" }} columns={columns} dataSource={user} />;
+  return (
+    <>
+      {showLoader && (
+        <Row justify="center" style={{ marginTop: "20em" }}>
+          <Spin ize="large" />
+        </Row>
+      )}
+      <Table style={{ borderRadius: "20px", margin: "50px" }} columns={columns} dataSource={user} />;
+    </>
+  );
 }

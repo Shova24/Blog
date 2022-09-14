@@ -27,7 +27,6 @@ export default function UserDetails() {
   }, []);
 
   const addPost = async (values) => {
-    let len = 1;
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
       method: "POST",
       body: JSON.stringify({
@@ -43,8 +42,8 @@ export default function UserDetails() {
     });
     const data = await response.json();
     setPost([data, ...post]);
-    len = Number(data.length);
-    console.log(len);
+    form.resetFields();
+
     // .then((response) => response.json())
     // .then((json) => {
     //   // console.log(json);
@@ -87,11 +86,11 @@ export default function UserDetails() {
         </Col>
         <Col md={12} xs={24}>
           <Card style={{ borderRadius: "15px", padding: "5px" }}>
-            <Row justify="end">
+            {/* <Row justify="end">
               <Link to="/users">
                 <EditOutlined />
               </Link>
-            </Row>
+            </Row> */}
             <Title level={3}>{user?.name}</Title>
             <Divider>{user?.company?.name}</Divider>
             <Col span={24}>

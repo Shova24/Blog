@@ -1,12 +1,20 @@
 import React, { useState } from "react";
-import { Form, Card, Row, Col, Button, Tag, Typography, Divider, Modal, Input } from "antd";
+import { Form, Card, Row, Col, Button, Tag, Typography, Divider, Modal, Input, Popconfirm, notification } from "antd";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const { TextArea } = Input;
 const { Title } = Typography;
+const openNotification = (title) => {
+  notification.open({
+    message: title,
+  });
+};
+
 export default function Post({ post, posts, setPost }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // console.log(openNotification("Delete"));
 
   const [form] = Form.useForm();
   const deletePost = async (postId) => {
@@ -27,6 +35,7 @@ export default function Post({ post, posts, setPost }) {
       .catch((err) => {
         console.log(err);
       });
+    openNotification("Task Has Been Deleted");
     console.log("Deleted Item ID : ", postId);
   };
 
@@ -63,12 +72,12 @@ export default function Post({ post, posts, setPost }) {
   };
   return (
     <Card style={{ borderRadius: "15px", margin: "10px" }}>
-      <Modal open={isModalOpen} onOk={updatePost} footer={null}>
+      <Modal open={isModalOpen} onOk={updatePost} footer={null} closable={false}>
         <Card style={{ borderRadius: "15px", margin: "10px" }}>
           <Form form={form} onFinish={updatePost}>
-            <Form.Item name="userID" label="User ID">
+            {/* <Form.Item name="userID" label="User ID">
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item name="title" label="Post Title">
               <Input />
             </Form.Item>
@@ -88,7 +97,10 @@ export default function Post({ post, posts, setPost }) {
           </Tag>
         </Col>
         <Col>
-          <CloseOutlined style={{ marginRight: "10px" }} onClick={() => deletePost(post.id)} />
+          <Popconfirm title="Do you want to delete the post?" onConfirm={() => deletePost(post.id)} okText="Yes" cancelText="No">
+            <CloseOutlined style={{ marginRight: "10px" }} />
+          </Popconfirm>
+          {/* <CloseOutlined style={{ marginRight: "10px" }} onClick={() => deletePost(post.id)} /> */}
           <EditOutlined onClick={() => editPost(post)} />
         </Col>
       </Row>
